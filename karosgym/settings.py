@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ventas',
     'rest_framework',
     'corsheaders',
+    'mysqlclient',
 ]
 
 MIDDLEWARE = [
