@@ -1,1 +1,2 @@
-web: gunicorn karosgym.wsgi --log-file /var/log/gunicorn.log
+web: gunicorn karosgym.wsgi
+
