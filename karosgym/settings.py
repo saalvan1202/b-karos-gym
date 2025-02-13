@@ -12,11 +12,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import pymysql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-import pymysql
-pymysql.install_as_MySQLdb()
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
     'ventas',
     'rest_framework',
     'corsheaders',
-    'mysqlclient',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'karosgym.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+pymysql.install_as_MySQLdb()
 DATABASES = {
     'default':dj_database_url.parse\
         ('mysql://root:CgmabhuIQBAKCuAsnGwbyVAOWliydUta@viaduct.proxy.rlwy.net:46032/railway')
