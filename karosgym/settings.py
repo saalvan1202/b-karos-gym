@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-ml65*y6_+txeov6c_48b-hl6)7t=f!9q727)=rew3u%ewr92k$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS =[]
+ALLOWED_HOSTS =["*"]
 
 
 # Application definition
@@ -57,6 +57,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'karosgym.urls'
+WSGI_APPLICATION = 'karosgym.wsgi.application'
 
 TEMPLATES = [
     {
@@ -74,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'karosgym.wsgi.application'
+
 
 
 # Database
@@ -97,8 +98,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-PYTHONUNBUFFERED=1
-PORT=8000
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
