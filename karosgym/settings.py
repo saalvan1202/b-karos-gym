@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventario',
     'ventas',
+    'pymysql',
     'rest_framework',
     'corsheaders',
 ]
