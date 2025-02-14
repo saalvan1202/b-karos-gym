@@ -1,1 +1,1 @@
-gunicorn --bind :8080 --error-logfile /tmp/gunicorn.error.log karosgym.wsgi:application
+web: gunicorn --bind :8080 --error-logfile /tmp/gunicorn.error.log karosgym.wsgi:application
