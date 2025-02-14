@@ -9,19 +9,17 @@ class ProductosViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = ProducotosSerializer
-    def create(self, request, *args, **kwargs):
-        serializer=self.get_serializer(data=request.data)
-        obj=Productos.objects.filter(id=request.data.get('id')).first()    
+    def perform_create(self, serializer):
+        print("Request data:", self.request.data.get('id'))
+        obj=Productos.objects.filter(id=self.request.data.get('id')).first()    
         if(obj):
             for attr, value in serializer.validated_data.items():
                 setattr(obj, attr, value)
             obj.estado = True # Asegura que el estado sea True en la actualización
             obj.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Crear (no se proporcionó ID)
             serializer.save(estado=True)
-            return Response(serializer.data, status=status.HTTP_201_CREATED) 
     def destroy(self, request, *args, **kwargs):
         obj=self.get_object()
         obj.estado=False
