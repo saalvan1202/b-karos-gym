@@ -13,6 +13,7 @@ class VentasSerializers(serializers.ModelSerializer):
         return obj.hora_formateada()
 class DetalleVentasSerializers(serializers.ModelSerializer):
     nombre = serializers.CharField(source='producto.nombre', read_only=True)
+    stock=serializers.CharField(source='producto.stock', read_only=True)
     class Meta:
         model=DetallesVentas
-        fields=['id', 'id_venta', 'nombre', 'cantidad', 'precio_unitario', 'sub_total','producto']
+        fields=['id', 'id_venta', 'nombre', 'cantidad', 'precio_unitario', 'sub_total','producto','stock']

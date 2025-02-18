@@ -1,8 +1,13 @@
 from django.shortcuts import render
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.db.models.functions import TruncDate
 from rest_framework import viewsets,permissions,status
 from .serializers import *
+from inventario.models import *
 from django.db import transaction
+from django.db.models import Sum,F
+from datetime import date
 # Create your views here.
 class VentasViewSet(viewsets.ModelViewSet):
     permission_classes=[permissions.AllowAny]
@@ -38,13 +43,18 @@ class VentasViewSet(viewsets.ModelViewSet):
                         detalle_id=detalle_data['id']
                         if(detalle_id):
                             detalle=DetallesVentas.objects.filter(id=detalle_id).first()
-                            print(f"Detalle data: {detalle}") 
                             if(detalle):
+                                detalle_cantidad=detalle.cantidad
                                 detalle_serializer=DetalleVentasSerializers(detalle,data=detalle_data,partial=True)
-                                
                                 if detalle_serializer.is_valid():
-                                    print(f"Detalle data:") 
                                     detalle_serializer.save()
+                                    producto=Productos.objects.get(id=detalle_data.get('producto'))
+                                    if(producto):
+                                        producto.stock=(producto.stock+detalle_cantidad)-int(detalle_data.get('cantidad'))
+                                        print(producto.stock)
+                                        producto.save()
+                                    else:
+                                        print('Producto no encontrado')   
                                 else:
                                     raise serializers.ValidationError(detalle_serializer.errors) 
                             else:
@@ -52,6 +62,13 @@ class VentasViewSet(viewsets.ModelViewSet):
                                 detalle_serializer = DetalleVentasSerializers(data=detalle_data)
                                 if detalle_serializer.is_valid():
                                     detalle_serializer.save()
+                                    #Restamos lo vendido
+                                    producto=Productos.objects.get(id=detalle_data.get('producto'))
+                                    if(producto):
+                                        producto.stock=producto.stock-int(detalle_data.get('cantidad'))
+                                        producto.save()
+                                    else:
+                                        print('no')
                                 else:
                                     raise serializers.ValidationError(detalle_serializer.errors) # Revertir si hay errores en los detalles
 
@@ -65,3 +82,16 @@ class VentasViewSet(viewsets.ModelViewSet):
         obj.estado=False
         obj.save()
         return Response(data=status.HTTP_200_OK)
+    
+class ResumenDetalleProductosViewSet(APIView):
+   def get(self, request, *args, **kwargs):
+       fecha=request.query_params.get('fecha',date.today())
+       response=DetallesVentas.objects.filter(id_venta__fecha__date=fecha).values(nombre=F('producto__nombre')).annotate(SumCantidad=Sum('cantidad'))
+       if(response):
+        return Response(list(response), status=status.HTTP_201_CREATED)
+       else:
+        return Response('No hay datos',status=status.HTTP_201_CREATED)
+       
+       
+      
+    

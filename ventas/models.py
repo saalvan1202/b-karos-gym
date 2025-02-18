@@ -19,7 +19,7 @@ class DetallesVentas(models.Model):
     cantidad=models.IntegerField(blank=True,unique=False,null=False)
     precio_unitario=models.DecimalField(max_digits=10,decimal_places=2,blank=True,unique=False,null=False)
     sub_total=models.DecimalField(max_digits=10,decimal_places=2,blank=True,unique=False,null=False)
-    id_venta=models.IntegerField(blank=True,unique=False,null=False)
+    id_venta=models.ForeignKey(Ventas, on_delete=models.CASCADE, db_column='id_venta')
     producto=models.ForeignKey(Productos, on_delete=models.CASCADE)
     class Meta:
         db_table='detalles_ventas'
