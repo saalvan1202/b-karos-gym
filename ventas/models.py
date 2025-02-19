@@ -21,5 +21,6 @@ class DetallesVentas(models.Model):
     sub_total=models.DecimalField(max_digits=10,decimal_places=2,blank=True,unique=False,null=False)
     id_venta=models.ForeignKey(Ventas, on_delete=models.CASCADE, db_column='id_venta')
     producto=models.ForeignKey(Productos, on_delete=models.CASCADE)
+    estado=models.BooleanField(blank=True,unique=False,null=False,default=True)
     class Meta:
         db_table='detalles_ventas'

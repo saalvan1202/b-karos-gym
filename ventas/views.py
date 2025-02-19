@@ -66,7 +66,10 @@ class VentasViewSet(viewsets.ModelViewSet):
                                     producto=Productos.objects.get(id=detalle_data.get('producto'))
                                     if(producto):
                                         producto.stock=producto.stock-int(detalle_data.get('cantidad'))
-                                        producto.save()
+                                        if(producto.stock>=0):
+                                            producto.save()
+                                        else:
+                                            raise Response('El stock es insuficiente',status=status.HTTP_400_BAD_REQUEST)  
                                     else:
                                         print('no')
                                 else:
@@ -85,12 +88,13 @@ class VentasViewSet(viewsets.ModelViewSet):
     
 class ResumenDetalleProductosViewSet(APIView):
    def get(self, request, *args, **kwargs):
-       fecha=request.query_params.get('fecha',date.today())
-       response=DetallesVentas.objects.filter(id_venta__fecha__date=fecha).values(nombre=F('producto__nombre')).annotate(SumCantidad=Sum('cantidad'))
+       fecha=request.GET.get('fecha',date.today())
+       response=DetallesVentas.objects.filter(id_venta__fecha__date=fecha,id_venta__estado=True).values(nombre=F('producto__nombre')).annotate(SumCantidad=Sum('cantidad'))
+       print(response)
        if(response):
         return Response(list(response), status=status.HTTP_201_CREATED)
        else:
-        return Response('No hay datos',status=status.HTTP_201_CREATED)
+        return Response([],status=status.HTTP_201_CREATED)
        
        
       

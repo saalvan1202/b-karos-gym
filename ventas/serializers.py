@@ -16,4 +16,4 @@ class DetalleVentasSerializers(serializers.ModelSerializer):
     stock=serializers.CharField(source='producto.stock', read_only=True)
     class Meta:
         model=DetallesVentas
-        fields=['id', 'id_venta', 'nombre', 'cantidad', 'precio_unitario', 'sub_total','producto','stock']
+        fields=['id', 'id_venta', 'nombre', 'cantidad', 'precio_unitario', 'sub_total','producto','stock','estado']
