@@ -84,7 +84,8 @@ TEMPLATES = [
 pymysql.install_as_MySQLdb()
 DATABASES = {
     'default':dj_database_url.parse\
-        ('mysql://root:CgmabhuIQBAKCuAsnGwbyVAOWliydUta@viaduct.proxy.rlwy.net:46032/railway')
+        ('mysql://root:RLitwNZsYtufqqirxzrXiWcAYkhiEccg@tramway.proxy.rlwy.net:42372/railway')
+        
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'comercial_kg',

@@ -17,3 +17,7 @@ class DetalleVentasSerializers(serializers.ModelSerializer):
     class Meta:
         model=DetallesVentas
         fields=['id', 'id_venta', 'nombre', 'cantidad', 'precio_unitario', 'sub_total','producto','stock','estado']
+class CortesiasSerializers(serializers.ModelSerializer):
+    class Meta:
+        model=Cortesias
+        fields='__all__'

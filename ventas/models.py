@@ -24,3 +24,11 @@ class DetallesVentas(models.Model):
     estado=models.BooleanField(blank=True,unique=False,null=False,default=True)
     class Meta:
         db_table='detalles_ventas'
+
+class Cortesias(models.Model):
+    id_personal=models.IntegerField(blank=True,unique=False,null=False)
+    id_producto=models.IntegerField(blank=True,unique=False,null=False)
+    cantidad=models.IntegerField(blank=True,unique=False,null=False)
+    estado=models.BooleanField(blank=True,unique=False,null=False,default=True)
+    class Meta:
+        db_table='cortesias'
