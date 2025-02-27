@@ -2,8 +2,11 @@ from django.shortcuts import render
 from rest_framework import viewsets,permissions,status
 from rest_framework.response import Response
 from .serializers import *
+from rest_framework.authentication import TokenAuthentication
 # Create your views here.
 class ProductosViewSet(viewsets.ModelViewSet):
+    permission_classes=[permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     queryset=Productos.objects.all().filter(estado=True).order_by('-id')
     permission_classes=[
         permissions.AllowAny,
@@ -43,9 +46,8 @@ class ProductosViewSet(viewsets.ModelViewSet):
         return Response(data=status.HTTP_200_OK)
 class InventariosViewSet(viewsets.ModelViewSet):
     queryset=Inventarios.objects.all().filter(estado=True).order_by('-id')
-    permission_classes=[
-        permissions.AllowAny,
-    ]
+    permission_classes=[permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     serializer_class=InventarioSerializer
     def perform_create(self, serializer):
         data=self.request.data.copy()

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models.functions import TruncDate
+from rest_framework.authentication import TokenAuthentication
 from rest_framework import viewsets,permissions,status
 from .serializers import *
 from inventario.models import *
@@ -10,7 +11,8 @@ from django.db.models import Sum,F
 from datetime import date
 # Create your views here.
 class VentasViewSet(viewsets.ModelViewSet):
-    permission_classes=[permissions.AllowAny]
+    permission_classes=[permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
     serializer_class = VentasSerializers
     queryset = Ventas.objects.all().filter(estado=True).order_by('-id')
     def retrieve(self, request, *args, **kwargs): 
@@ -87,7 +89,9 @@ class VentasViewSet(viewsets.ModelViewSet):
         return Response(data=status.HTTP_200_OK)
     
 class ResumenDetalleProductosViewSet(APIView):
-   def get(self, request, *args, **kwargs):
+    permission_classes=[permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    def get(self, request, *args, **kwargs):
        fecha=request.GET.get('fecha',date.today())
        response=DetallesVentas.objects.filter(id_venta__fecha__date=fecha,id_venta__estado=True).values(nombre=F('producto__nombre')).annotate(SumCantidad=Sum('cantidad'))
        print(response)

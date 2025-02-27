@@ -41,8 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventario',
     'ventas',
+    'seguridad',
     'pymysql',
+    'requests',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 ]
 
